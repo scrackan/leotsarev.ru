@@ -13,9 +13,14 @@ build_search_index = true
 
 theme = "hyde"
 
+title = "Леонид Царев"
+description = ""
+
 [extra]
 hyde_links = [
-    {url = "http://bastilia.ru", name="#Бастилия"}
+    {url = "/larp", name = "Ролевое"},
+    {url = "/personal", name = "Личное"},
+    {url = "/archive", name = "Архив"},
 ]
 
 hyde_theme = "theme-base-08"
