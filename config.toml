@@ -22,7 +22,7 @@ hyde_links = [
     {url = "/larp", name = "Ролевое"},
     {url = "/larp/games", name = " - Игры"},
     {url = "/personal", name = "Личное"},
-    {url = "/personal/whislist", name = " - Вишлист"},
+    {url = "/personal/wishlist", name = " - Вишлист"},
     {url = "/personal/korvet", name = " - Корвет"},
     {url = "/archive", name = "Архив"},
 ]
