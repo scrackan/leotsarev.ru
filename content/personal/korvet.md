@@ -1,6 +1,7 @@
 +++
 title="Корвет-на-купле"
 description="Где находится моя дача и как туда добраться"
+aliases=["/directions-korvet", "/korvet"]
 +++
 ### Место
 
