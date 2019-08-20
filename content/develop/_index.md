@@ -7,7 +7,7 @@
  - [Github](https://github.com/leotsarev/)
 
 ## Актуальные хобби-проекты
-### Joinrpg.ru
+### [Joinrpg.ru](/larp/joinrpg)
 База заявок на полевые ролевые игры
  - [Сайт](https://joinrpg.ru)
  - [Репозиторий](https://github.com/joinrpg/joinrpg-net)
