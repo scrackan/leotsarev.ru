@@ -15,3 +15,4 @@ title = "Леонид Царев"
  - Twitter: [@leotsarev](https://twitter.com/@leotsarev)
  - VK: [leotsarev](https://vk.com/leotsarev)
  - Github: [leotsarev](https://github.com/leotsarev)
+ - Телеграм-канал с ролевым: [@leo_bastilia](https://t.me/leo_bastilia)
