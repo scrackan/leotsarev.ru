@@ -16,3 +16,6 @@
 База заявок на полевые ролевые игры
  - [Сайт](https://joinrpg.ru)
  - [Репозиторий](https://github.com/joinrpg/joinrpg-net)
+
+### [Code.rpg.ru](http://code.rpg.ru)
+Сборник всякого ролевого софта (не только и не столько моего).
