@@ -1,10 +1,11 @@
 +++
- title="Программисткое"
-+++
+ title="Программирование"
++++ 
 Я программист. Умею программировать, и помогать другим людям программировать (то, что называется тимлид, архитектор, руководитель разработки).
- - Резюме есть на HH.ru
+ - [Резюме](<leonid-tsarev-resume.pdf>)
  - [Linkedin.com](https://www.linkedin.com/in/leonid-tsarev-38712445/)
  - [Github](https://github.com/leotsarev/)
+ - [Stackoverflow](https://stackoverflow.com/users/story/408666)
 
 ## Актуальные хобби-проекты
 ### [Joinrpg.ru](/larp/joinrpg)
