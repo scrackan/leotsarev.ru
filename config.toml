@@ -19,6 +19,7 @@ description = ""
 [extra]
 hyde_links = [
     {url = "/develop", name = "Программирование"},
+    {url = "/develop/articles/", name = " - Статьи"},
     {url = "/larp", name = "Ролевое"},
     {url = "/larp/games", name = " - Игры"},
     {url = "/personal", name = "Личное"},

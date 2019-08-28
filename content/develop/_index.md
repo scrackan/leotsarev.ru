@@ -11,6 +11,9 @@
  - [Stackoverflow](https://stackoverflow.com/users/story/408666)
  - [Хабр](https://habr.com/ru/users/leotsarev/posts/)
 
+## [Статьи](articles)
+Сюда заботливо перенесены мои осмысленные статьи по программированию.
+
 ## Актуальные хобби-проекты
 ### [Joinrpg.ru](/larp/joinrpg)
 База заявок на полевые ролевые игры
