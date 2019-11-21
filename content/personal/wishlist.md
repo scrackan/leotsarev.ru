@@ -33,7 +33,7 @@
     1. Pro .NET Benchmarking Andrey Akinshin ‏
     1. Pro .NET Performance Sasha Goldstein
     1. Design Patterns in .NET Reusable Approaches in C# and F# for Object-Oriented Software Design  Nesteruk, Dmitri 
-    1. Domain Modeling Maid Functional Scot Wlaschin
+    1. Domain Modeling Made Functional Scot Wlaschin
 
 ## Дополнительная часть вишлиста
 1. Настольные игры (по возможности на английском)
@@ -49,6 +49,8 @@
     1. Civilization: A New Dawn 
     1. Gloomhaven
     1. Покроители космоса https://www.crowdgames.ru/collection/pokoriteli-kosmosa
+    1. Брасс https://www.crowdgames.ru/collection/brass
+    1. О мышах и тайнах
     1. Любая настолка по вашему выбору (ТОЛЬКО для настолкозадротов, например настолко-петергофцев)
 1. Толстовка с капюшоном, карманом спереди и надписей на спине «мастерская группа»
 
