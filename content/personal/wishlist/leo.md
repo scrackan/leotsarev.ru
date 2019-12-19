@@ -1,5 +1,5 @@
 +++
- title="Вишлист"
+ title="Вишлист — Лео"
  description = "Что мне дарить на всякие праздники"
 +++
 По всем темам, касающимся подарков, можно писать [моей жене](mailto:atana@bastilia.ru)
@@ -18,7 +18,6 @@
     1. Twilight Imperium 4ая редакция
     1. Остаться в Живых. Неизведанные Земли [ссылка](https://gaga.ru/game/ostatsja-v-zhivih-neizvedannie-zemli/)
     1. Dune Board Game [ссылка](https://www.gf9games.com/dune/)
-    1. Дополнения к игре «Серп» 
     1. Самая сложная настольная игра в мире [The Campaign for North Africa] (https://boardgamegeek.com/boardgame/4815/campaign-north-africa)
 1. Футболка XXXL со смешной надписью, как-то:
     1. «Кто такой Джон Голт?»
@@ -30,10 +29,10 @@
     1. Ваш вариант...
 1. Детектор СO2 (не путать с детектором CO) [ссылка](https://www.ulmart.ru/goods/737032)
 1. Книги (только указанные, только на английском)
-    1. Pro .NET Benchmarking Andrey Akinshin ‏
     1. Pro .NET Performance Sasha Goldstein
     1. Design Patterns in .NET Reusable Approaches in C# and F# for Object-Oriented Software Design  Nesteruk, Dmitri 
     1. Domain Modeling Made Functional Scot Wlaschin
+1. Гирлянды для внешнего использования
 
 ## Дополнительная часть вишлиста
 1. Настольные игры (по возможности на английском)
@@ -53,4 +52,5 @@
     1. О мышах и тайнах
     1. Любая настолка по вашему выбору (ТОЛЬКО для настолкозадротов, например настолко-петергофцев)
 1. Толстовка с капюшоном, карманом спереди и надписей на спине «мастерская группа»
-
+1. Книги (только указанные, только на английском)
+    1. Pro .NET Benchmarking Andrey Akinshin ‏
