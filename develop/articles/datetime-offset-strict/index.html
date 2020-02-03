@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Леонид Царев</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https:&#x2F;&#x2F;leotsarev.ru&#x2F;print.css" media="print">
+      <link rel="stylesheet" href="https:&#x2F;&#x2F;leotsarev.ru&#x2F;poole.css">
+      <link rel="stylesheet" href="https:&#x2F;&#x2F;leotsarev.ru&#x2F;hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+
+      
+      
+    </head>
+
+    <body class="theme-base-08 ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+                            <a href="https:&#x2F;&#x2F;leotsarev.ru"><h1>Леонид Царев</h1></a>
+                            
+                            <img src="\photos\me-profile-2019.jpg" style="border: 1px solid black"/>
+                        
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;develop">Программирование</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;develop&#x2F;articles&#x2F;"> - Статьи</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;larp">Ролевое</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;larp&#x2F;games"> - Игры</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;personal">Личное</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;personal&#x2F;wishlist"> - Вишлист</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;personal&#x2F;korvet"> - Корвет</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;archive">Архив</a></li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h1 class="post-title">DateTimeOffset(strict)</h1>
+  
+  <p><a href="https://habr.com/ru/post/438946/">Оригинал на хабре</a></p>
+<p>Сегодня утром мой приятель @kirillkos столкнулся с проблемой.</p>
+<h2 id="problemnyi-kod">Проблемный код</h2>
+<p>Вот его код:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Event </span><span style="color:#eff1f5;">{
+   </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Message </span><span style="color:#eff1f5;">{</span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">;</span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">;}
+   </span><span style="color:#b48ead;">public </span><span style="color:#eff1f5;">DateTime </span><span style="color:#bf616a;">EventTime </span><span style="color:#eff1f5;">{</span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">;</span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">;}
+}
+
+</span><span style="color:#b48ead;">interface </span><span style="color:#c0c5ce;">IEventProvider {
+   IEnumerable&lt;Event&gt; </span><span style="color:#8fa1b3;">GetEvents</span><span style="color:#c0c5ce;">();
+}
+</span></pre>
+<p>И дальше много-много реализаций <code>IEventProvider</code>, достающие данные из разных таблиц и баз. </p>
+<p><strong>Проблема</strong>: во всех этих базах все в разных временных зонах. Соответственно, при попытке вывести события на UI все ужасно перепутано.</p>
+<p>Слава Хейлсбергу, у нас есть типы, пусть они спасут нас!</p>
+<h2 id="popytka-1">Попытка 1</h2>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Event </span><span style="color:#eff1f5;">{
+   </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Message </span><span style="color:#eff1f5;">{</span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">;</span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">;}
+   </span><span style="color:#b48ead;">public </span><span style="color:#eff1f5;">DateTimeOffset </span><span style="color:#bf616a;">EventTime </span><span style="color:#eff1f5;">{</span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">;</span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+}
+</span></pre>
+<p><code>DateTimeOffset</code> замечательный тип, он хранит информацию о смещении относительно UTC. Он прекрасно поддерживается MS SQL и Entity Framework (а в версии 6.3 будет поддерживаться <a href="https://github.com/aspnet/EntityFramework6/pull/429">еще лучше</a>). У нас в code style он обязательный для всего нового кода.</p>
+<p>Теперь мы можем собрать информацию с этих самых provider и консистентно, полагаясь на типы, вывести все на UI. Победа!</p>
+<p><strong>Проблема</strong>: <code>DateTimeOffset</code> умеет <em>неявно</em> преобразовываться из <code>DateTime</code>.
+Следующий код прекрасно скомпилируется:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Event </span><span style="color:#eff1f5;">{
+   </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Message </span><span style="color:#eff1f5;">{</span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">;</span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">;}
+   </span><span style="color:#b48ead;">public </span><span style="color:#eff1f5;">DateTimeOffset </span><span style="color:#bf616a;">EventTime </span><span style="color:#eff1f5;">{</span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">;</span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+}
+
+</span><span style="color:#c0c5ce;">IEnumerable&lt;Event&gt; </span><span style="color:#8fa1b3;">GetEvents</span><span style="color:#c0c5ce;">() 
+{
+   </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">new[] {
+     new Event() {</span><span style="color:#bf616a;">EventTime </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">DateTime</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Now</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">Message </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">Hello from unknown time!</span><span style="color:#c0c5ce;">&quot;},
+   };
+}
+</span></pre>
+<p>Это потому, что у <code>DateTimeOffset</code> определен оператор неявного приведения типов:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#65737e;">// Local and Unspecified are both treated as Local
+</span><span style="color:#b48ead;">public static </span><span style="color:#c0c5ce;">implicit </span><span style="color:#bf616a;">operator DateTimeOffset</span><span style="color:#c0c5ce;"> (</span><span style="color:#bf616a;">DateTime dateTime</span><span style="background-color:#bf616a;color:#2b303b;">)</span><span style="color:#c0c5ce;">;
+</span></pre>
+<p>Это совсем не то, что нам нужно. Мы-то хотели, чтобы программист при написании кода был <strong>вынужден</strong> задуматься: «а в какой собственной временной зоне случилось это событие? Откуда взять зону?». Часто совсем из других полей, иногда из связанных таблиц. А тут совершить ошибку <em>не задумавшись</em> очень легко.</p>
+<p>Проклятые неявные преобразования!</p>
+<h2 id="popytka-2">Попытка 2</h2>
+<p>С тех пор, как я услышал про ~~молоток~~ <a href="https://habr.com/ru/post/335792/">статические анализаторы</a>, мне все кажется ~~гвоздями~~ подходящими случаями для них. Нам надо написать статический анализатор, который запрещает это неявное преобразование, и объясняет почему... Выглядит, как многовато работы. Да и вообще, это работа компилятора, проверять типы. Пока отложим эту идею, как многословную.</p>
+<h2 id="popytka-3">Попытка 3</h2>
+<p>Вот если мы были бы в мире F#, сказал @kirillkos.
+Мы бы тогда:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">type </span><span style="color:#c0c5ce;">DateTimeOffsetStrict </span><span style="color:#b48ead;">=</span><span style="color:#c0c5ce;"> Value </span><span style="color:#b48ead;">of </span><span style="color:#c0c5ce;">DateTimeOffset
+</span></pre>
+<p>И дальше <s>не придумал импровизируй</s> какая-то магия нас спасла бы. Жаль, что у нас в конторе не пишут на F#, да и мы с @kirillkos его толком не знаем :-)</p>
+<h2 id="popytka-4">Попытка 4</h2>
+<p>Неужели что-то такое нельзя сделать на C#? Можно, но замучаешься преобразовывать туда-сюда. Стоп, но ведь мы только что видели, как можно сделать неявные преобразования!</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#65737e;">/// &lt;</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+/// Same as &lt;</span><span style="color:#bf616a;">see </span><span style="color:#d08770;">cref</span><span style="color:#65737e;">=</span><span style="color:#a3be8c;">&quot;DateTimeOffset&quot;</span><span style="color:#65737e;">/&gt;
+/// but w/o implicit conversion from &lt;</span><span style="color:#bf616a;">see </span><span style="color:#d08770;">cref</span><span style="color:#65737e;">=</span><span style="color:#a3be8c;">&quot;DateTime&quot;</span><span style="color:#65737e;">/&gt;
+/// &lt;/</span><span style="color:#bf616a;">summary</span><span style="color:#65737e;">&gt;
+public readonly struct DateTimeOffsetStrict
+</span><span style="color:#c0c5ce;">{
+  </span><span style="color:#b48ead;">private </span><span style="color:#c0c5ce;">DateTimeOffset </span><span style="color:#bf616a;">Internal </span><span style="color:#c0c5ce;">{ </span><span style="color:#bf616a;">get</span><span style="color:#c0c5ce;">; }
+  </span><span style="color:#b48ead;">private </span><span style="color:#bf616a;">DateTimeOffsetStrict</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">DateTimeOffset @internal</span><span style="color:#c0c5ce;">)
+  {
+    </span><span style="color:#bf616a;">Internal </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">@internal</span><span style="color:#c0c5ce;">;
+  }
+  
+ </span><span style="color:#b48ead;">public static </span><span style="color:#c0c5ce;">implicit </span><span style="color:#bf616a;">operator DateTimeOffsetStrict</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">DateTimeOffset dto</span><span style="background-color:#bf616a;color:#2b303b;">)</span><span style="color:#c0c5ce;"> 
+   =&gt; new DateTimeOffsetStrict(</span><span style="color:#bf616a;">dto</span><span style="color:#c0c5ce;">);
+
+ </span><span style="color:#b48ead;">public static </span><span style="color:#c0c5ce;">implicit </span><span style="color:#bf616a;">operator DateTimeOffset</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">DateTimeOffsetStrict strict</span><span style="background-color:#bf616a;color:#2b303b;">)</span><span style="color:#c0c5ce;"> 
+   =&gt; </span><span style="color:#bf616a;">strict</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Internal</span><span style="color:#c0c5ce;">;
+}
+</span></pre>
+<p>Самое интересное в этом типе, что он неявно преобразуется туда-сюда из <code>DateTimeOffset</code>, а вот попытка неявно преобразовать его из <code>DateTime</code> вызовет ошибку компиляции, преобразования из DateTime возможны только явные. Компилятор не может вызвать «цепочку» неявных преобразований, если они определены в нашем коде, это ему запрещает стандарт (<a href="https://stackoverflow.com/questions/6001854/chaining-implicit-operators-in-generic-c-sharp-classes">цитата на SO</a>). То есть, вот так работает:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">Event </span><span style="color:#eff1f5;">{
+   </span><span style="color:#b48ead;">public string </span><span style="color:#bf616a;">Message </span><span style="color:#eff1f5;">{</span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">;</span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">;}
+   </span><span style="color:#b48ead;">public </span><span style="color:#eff1f5;">DateTimeOffsetStrict </span><span style="color:#bf616a;">EventTime </span><span style="color:#eff1f5;">{</span><span style="color:#b48ead;">get</span><span style="color:#eff1f5;">;</span><span style="color:#b48ead;">set</span><span style="color:#eff1f5;">; }
+}
+
+</span><span style="color:#c0c5ce;">IEnumerable&lt;Event&gt; </span><span style="color:#8fa1b3;">GetEvents</span><span style="color:#c0c5ce;">() 
+{
+   </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">new[] {
+     new Event() {</span><span style="color:#bf616a;">EventTime </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">DateTimeOffset</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Now</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">Message </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">Hello from unknown time!</span><span style="color:#c0c5ce;">&quot;},
+   };
+}
+</span></pre>
+<p>а вот так нет:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#c0c5ce;">IEnumerable&lt;Event&gt; </span><span style="color:#8fa1b3;">GetEvents</span><span style="color:#c0c5ce;">() 
+{
+   </span><span style="color:#b48ead;">return </span><span style="color:#c0c5ce;">new[] {
+     new Event() {</span><span style="color:#bf616a;">EventTime </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">DateTime</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Now</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">Message </span><span style="color:#c0c5ce;">= &quot;</span><span style="color:#a3be8c;">Hello from unknown time!</span><span style="color:#c0c5ce;">&quot;},
+   };
+}
+</span></pre>
+<p>Что нам и требовалось!</p>
+<h2 id="itog">Итог</h2>
+<p>Пока не знаем, будем ли внедрять. Только всех приучили к DateTimeOffset, и теперь его заменять на <em>наш</em> тип — стремновато. Да и наверняка всплывут проблемы на уровне EF, ASP.NET parameter binding и еще в тысяче мест. Но самое решение кажется мне интересным. Аналогичные трюки я использовал, чтобы следить за безопасностью пользовательского ввода — делал тип <code>UnsafeHtml</code>, который неявно преобразуется <em>из</em> строки, а вот обратно его преобразовать в строку или <code>IHtmlString</code> можно только путем вызова sanitizer.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>

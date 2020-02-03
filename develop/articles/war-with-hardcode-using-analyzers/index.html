@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+      <!-- Enable responsiveness on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+      <title>Леонид Царев</title>
+
+      <!-- CSS -->
+      <link rel="stylesheet" href="https:&#x2F;&#x2F;leotsarev.ru&#x2F;print.css" media="print">
+      <link rel="stylesheet" href="https:&#x2F;&#x2F;leotsarev.ru&#x2F;poole.css">
+      <link rel="stylesheet" href="https:&#x2F;&#x2F;leotsarev.ru&#x2F;hyde.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+
+      
+
+      
+      
+    </head>
+
+    <body class="theme-base-08 ">
+        
+            <div class="sidebar">
+                <div class="container sidebar-sticky">
+                    <div class="sidebar-about">
+                        
+                            <a href="https:&#x2F;&#x2F;leotsarev.ru"><h1>Леонид Царев</h1></a>
+                            
+                            <img src="\photos\me-profile-2019.jpg" style="border: 1px solid black"/>
+                        
+                    </div>
+
+                    <ul class="sidebar-nav">
+                        
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;develop">Программирование</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;develop&#x2F;articles&#x2F;"> - Статьи</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;larp">Ролевое</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;larp&#x2F;games"> - Игры</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;personal">Личное</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;personal&#x2F;wishlist"> - Вишлист</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;personal&#x2F;korvet"> - Корвет</a></li>
+                        
+                        <li class="sidebar-nav-item"><a href="&#x2F;archive">Архив</a></li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div class="content container">
+            
+<div class="post">
+  <h1 class="post-title">Борьба с хардкодами при помощи статических анализаторов С#</h1>
+  
+  <p><a href="https://habr.com/ru/post/335792/">Оригинал на хабре</a></p>
+<p>В этой статье я расскажу, как мы написали собственные анализаторы кода и чистим с их помощью нашу кодовую базу .net от наиболее острых / частых косяков. Главный посыл — сделать это довольно просто, не бойтесь писать свои анализаторы для борьбы с именно вашими багами. Вторичный посыл — попробуйте наши анализаторы и сообщите о результатах. Полное руководство я писать не буду, их довольно много в интернете, а вот небольшой обзор, что это как и с какими проблемами я столкнулся, надеюсь, окажется вам полезным.</p>
+<h2>Проблема</h2>
+В декабре 2016 года я сменил работу и перешел в новую компанию. Новая контора находилась в стадии перехода от «отдел в полтора программиста на коленке лабает небольшой сервис для внутренних нужд» в «ИТ-компания в 100 человек разрабатывает ERP систему для нужд группы компаний и готовит продукт для внешних пользователей».
+<p>Естественно, в процессе этого перехода многие наколеночные «так принято» вещи становились серьезными и соответствующими разнообразным best practices. В частности, в компании появилась за несколько месяцев до моего прихода полноценная иерархия тестовых сред и отдел тестирования неуклонно боролся за соответствие тестовых сред — среде боевой.</p>
+<p>Авторы унаследованной архитектуры исповедовали микросервисный подход, сроки были жесткими, процент джуниоров — большой. Тестеры при развертывании на тестовую среду столкнулись с тем, что внезапно микросервис А, развернутый на тестовой среде, мог вызывать микросервис Б прямо на проде. Смотрим в код — и видим — URL микросервиса Б зашит внутрь кода микросервиса А.</p>
+<p>В процессе работы помимо проблемы «захардкоженная ссылка на микросервис» выявились и другие проблемы кода. Code-review check list все рос, ругань становилась все злее. Необходимо было решение, которое выявит все проблемы и предотвратит появление таких ситуаций в будущем.</p>
+<h2>Статические анализаторы</h2>
+Новый компилятор языка C# — Roslyn — полностью open source и включает поддержку pluggable static analyzers. Анализаторы могут выдавать ошибки, предупреждения и хинты, работают как во время компиляции, так и в реальном времени в IDE.
+<p>Анализаторы имеют доступ к <a href="https://ru.wikipedia.org/wiki/Абстрактное_синтаксическое_дерево">AST</a>(абстрактному синтаксическому дереву) и могут подписываться на элементы определенного типа, например на числа или строки или на вызовы методов. В самом простом виде это выглядит как-то так:</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">private static void </span><span style="color:#8fa1b3;">AnalyzeLiteral</span><span style="color:#c0c5ce;">(SyntaxNodeAnalysisContext </span><span style="color:#bf616a;">context</span><span style="color:#c0c5ce;">)
+{
+  </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">syntaxNode </span><span style="color:#c0c5ce;">is LiteralExpressionSyntax </span><span style="color:#bf616a;">literal</span><span style="color:#c0c5ce;">)
+  {
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">value </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">literal</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Token</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ValueText</span><span style="color:#c0c5ce;">;
+    
+    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">value </span><span style="color:#c0c5ce;">!= &quot;</span><span style="color:#a3be8c;">@</span><span style="color:#c0c5ce;">&quot; &amp;&amp; </span><span style="color:#bf616a;">value</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Contains</span><span style="color:#c0c5ce;">(&quot;</span><span style="color:#a3be8c;">@</span><span style="color:#c0c5ce;">&quot;))
+    {
+      </span><span style="color:#bf616a;">context</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">ReportDiagnostic</span><span style="color:#c0c5ce;">( </span><span style="color:#bf616a;">Diagnostic</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Create</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">Rule</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">context</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Node</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">GetLocation</span><span style="color:#c0c5ce;">(), </span><span style="color:#bf616a;">value</span><span style="color:#c0c5ce;">));
+     }
+}
+</span></pre>
+<p>(Это моя самая первая попытка написать анализатор для захардкоженных email).</p>
+<p>По дереву можно ходить вверх, вниз и вбок, и нет необходимости отличать, скажем, комментарий от строкового литерала — парсер компилятора делает все это за нас. Впрочем, уровня синтаксиса может быть недостаточно. Например,</p>
+<p><code>cs var guid = new Guid(&quot;...&quot;);</code>
+На синтаксическом уровне мы не можем понять, конструктор какого типа мы вызываем. Скорее всего, это <code>System.Guid</code>. А что, если нет? На уровне синтаксического дерева это просто «конструктор класса с идентификатором, равным &quot;<code>Guid</code>&quot;». Для более точной диагностики нам нужно вызвать так называемую семантическую модель и получить у нее информацию о том, какому символу соответствует элемент синтаксического дерева.</p>
+<pre style="background-color:#2b303b;">
+<span style="color:#b48ead;">private static void </span><span style="color:#8fa1b3;">AnalyzeCtor</span><span style="color:#c0c5ce;">(SyntaxNodeAnalysisContext </span><span style="color:#bf616a;">context</span><span style="color:#c0c5ce;">)
+{
+  </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">context</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Node</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">GetContainingClass</span><span style="color:#c0c5ce;">().</span><span style="color:#bf616a;">IsProbablyMigration</span><span style="color:#c0c5ce;">())
+  {
+    </span><span style="color:#b48ead;">return</span><span style="color:#c0c5ce;">;
+  }
+
+  </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">context</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Node </span><span style="color:#c0c5ce;">is ObjectCreationExpressionSyntax </span><span style="color:#bf616a;">createNode</span><span style="color:#c0c5ce;">)
+  {
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">type </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">context</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SemanticModel</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">GetTypeInfo</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">createNode</span><span style="color:#c0c5ce;">).</span><span style="color:#bf616a;">Type </span><span style="color:#c0c5ce;">as INamedTypeSymbol;
+    </span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">guidType </span><span style="color:#c0c5ce;">= </span><span style="color:#bf616a;">context</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">SemanticModel</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">Compilation</span><span style="color:#c0c5ce;">.</span><span style="color:#bf616a;">GetTypeByMetadataName</span><span style="color:#c0c5ce;">(typeof(System.Guid).</span><span style="color:#bf616a;">FullName</span><span style="color:#c0c5ce;">);
+  
+    </span><span style="color:#b48ead;">if </span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">Equals</span><span style="color:#c0c5ce;">(</span><span style="color:#bf616a;">type</span><span style="color:#c0c5ce;">, </span><span style="color:#bf616a;">guidType</span><span style="color:#c0c5ce;">))
+    {
+      ..
+    }
+  }
+}
+</span></pre>
+<p>Семантическая модель — это промежуточные результаты компиляции. В отличие от синтаксиса, она может быть неполна (напоминаю, мы работаем в контексте IDE, программист может прямо сейчас писать анализируемый класс). Поэтому готовьтесь, методы семантической модели много и часто возвращают null.</p>
+<p>Анализаторы ставятся в проект, как обычные NuGet пакеты. После перекомпиляции начинаются проявляться ошибки и предупреждения. Мы в конторе сделали внутренний NuGet пакет (у нас вообще вся сборка всего идет через пакеты), который ставит рекомендованную комбинацию анализаторов. Планируем еще туда дописать наши специфические конторские штуки, и туда же можно добавлять не наши пакеты (я например добавил <a href="https://www.nuget.org/packages/AsyncFixer">AsyncFixer</a>, очень удобная штука, всем рекомендую).</p>
+<p>Вот так это выглядит в редакторе</p>
+<img src="https://habrastorage.org/web/40a/d33/0fa/40ad330fa02f4d12b982d590a1b47be1.png"/>
+<p>А так в итогах компиляции</p>
+<img src="https://habrastorage.org/web/57b/8a7/f5e/57b8a7f5e24b411e8bc4be394d4b8c07.png"/>
+<h2>Какие анализаторы мы сделали</h2>
+<h3>Анализатор захардкоженных URL</h3>
+Самый важный для нас анализатор. Тупо ищет все литералы с http, https, ftp и так далее. Список исключений довольно большой — в основном разнообразный автогенеренный код, SOAP атрибуты, namespace и все такое.
+<h3>Анализатор захардкоженной ставки НДС</h3>
+Редко, но метко встречающаяся в нашем коде проблема. Иногда «сумма с НДС» высчитывается из «суммы без НДС» умножением на 1.18. Это сразу две проблемы. Во-первых, ставка НДС может измениться, и искать все места в коде — большая проблема. Во-вторых, ставка НДС вообще-то — не константа, а атрибут конкретного заказа — он может быть со ставкой НДС 0% (такие юрлица часто бывают у перевозчиков), может относится к другой юрисдикции, наконец, при изменении ставки НДС она изменится для новых заказов, а для старых окажется прежней. 
+Поэтому никакого захардкоженного НДС! 
+<p>В исключения тут попали в основном функции вырезания подстрок (substring). Иногда там имеет смысл передавать жестко прописанное 18. Приходится ловить по именам параметров метода.</p>
+<h3>Анализатор захардкоженного Guid</h3>
+Мы часто из кода ссылаемся на id базы (у нас приняты Guid). Это плохо. Особенно мы страдаем из-за таблиц статусов, которым на самом деле стоило бы просто сделать enum (от них мы избавляемся, но они есть). Пока в качестве промежуточного решения мы договорились, что в коде могут встречать id, если они одинаковы во всех средах (значит, создаются миграциями) и если они располагаются непосредственно в коде соответствующей Entity (да, мы используем Entity Framework 6 и не стесняемся). 
+<h3>Что у нас в планах</h3>
+— анализатор захардкоженных email
+— анализатор, обязывающий писать методы контроллера асинхронными
+<h2>Возникшие трудности и странные моменты</h2>
+<h3>Общая библиотека</h3>
+Естественным было разделить анализаторы по принципу 1 анализатор = 1 assembly = 1 nuget пакет. Дело в том, что все написанные нами анализаторы очень opinionated, и логично предоставить возможность подключать / отключать их по одному. В процесс написания анализаторов я стал активно выносить общий код из анализаторов в общую библиотеку и возникла проблема: если разные версии анализаторов загружены в студию — они не могут загрузить разные версии общей библиотеки. Самым простым решением оказалось сливать на этапе билда каждый анализатор с общей библиотекой в единый assembly. Для этого я воспользовался <a href="https://github.com/gluck/il-repack">ILRepack</a>, у которого есть удобный биндинг для MSBuild (`ILRepack.MSBuild.Task`). К сожалению, биндинг немного устарел, но это вроде бы пока не влияет.
+<p>Стандартные зависимости анализаторов (Microsoft.CodeAnalysis.*) таскать с собой не нужно, и зависеть от них NuGet тоже не должен. Visual Studio сама выдаст нам нужные библиотеки.</p>
+<h3>Сборка при помощи Appveyor</h3>
+Я привык настраивать непрерывную сборку проектов с исходным кодом при помощи Appveyor. Собирать и публиковать NuGet он тоже умеет. Но анализаторы — особая магия. В частности, в плане структуры директорий внутри пакета, там все по-особому, нужно раскладывать в папку analyzers вместо стандартной lib. Я немного <a href="https://stackoverflow.com/search?q=user%3A408666+%5Bappveyor%5D">помучился</a> и пришел к решению — в csproj как эта сборки прописан вызов Nuget.exe, который мы таскаем с собой в пакете. Некрасиво, как мне кажется, но более красивого решения я не нашел.
+<h3>Написание юнит-тестов</h3>
+Юнит-тесты для анализаторов — это супер классно и удобно. Я использовал стандартную MS обертку для юнит-тестов анализатора, любой false позитив тут же оформлял юнит-тестом. Классно! Гораздо приятнее, чем возиться с нечетким человеческим ТЗ.
+<h3>Переход на .netstandard</h3>
+Перейти на .netstandart мне пока не удалось. Попытка с ходу оказалась неудачной, официальный template все еще генерит portable class библиотеки. Ждем обновленного template и попробуем сделать по нему. <a href="https://github.com/dotnet/roslyn/issues/18414#issuecomment-323332881">https://github.com/dotnet/roslyn/issues/18414</a>
+<h2>Заключение</h2>
+Буду рад пинкам по поводу моего подхода. Исходники можно <a href="https://github.com/leotsarev/hardcode-analyzer">посмотреть здесь</a>.
+<p>Буду также рад, если кто-то посоветует хорошие опенсорсные C# проекты, на которых проверить анализаторы, или проверит у себя на своих (может даже не опенсорсных) и зарепортит баги.</p>
+<p>Очень хотелось бы ссылок на другие полезные анализаторы, желательно не дублирующие функционал Resharper.</p>
+
+</div>
+
+        </div>
+
+    </body>
+
+</html>
