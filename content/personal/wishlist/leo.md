@@ -18,7 +18,7 @@
     1. Twilight Imperium 4ая редакция
     1. Остаться в Живых. Неизведанные Земли [ссылка](https://gaga.ru/game/ostatsja-v-zhivih-neizvedannie-zemli/)
     1. Dune Board Game [ссылка](https://www.gf9games.com/dune/)
-    1. Самая сложная настольная игра в мире [The Campaign for North Africa] (https://boardgamegeek.com/boardgame/4815/campaign-north-africa)
+    1. Самая сложная настольная игра в мире [The Campaign for North Africa](https://boardgamegeek.com/boardgame/4815/campaign-north-africa)
 1. Футболка XXXL со смешной надписью, как-то:
     1. «Кто такой Джон Голт?»
     1. «Движение за восстановление бассейна „Москва“»
@@ -46,9 +46,7 @@
     1. Cosmic Encounter 
     1. DOOM: The Board Game (редакция 2016 года, а не та, которая у Вера)
     1. Civilization: A New Dawn 
-    1. Покроители космоса https://www.crowdgames.ru/collection/pokoriteli-kosmosa
     1. Брасс https://www.crowdgames.ru/collection/brass
-    1. О мышах и тайнах
     1. Любая настолка по вашему выбору (ТОЛЬКО для реальных настолкозадротов, например настолко-петергофцев. Не надо дарить настолку, если вы не уверены, она может не понравится или у меня она уже может быть)
 1. Толстовка с капюшоном, карманом спереди и надписей на спине «мастерская группа»
 1. Книги (только указанные, только на английском)
