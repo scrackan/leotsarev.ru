@@ -15,8 +15,6 @@
     1. Инновация (строго английский,  без дополнения)
     1. Heroes of Terrinoth
     1. Миниатюры к Saganami Island Tactical Simulator [ссылка](https://www.nobleknight.com/Products/Honorverse---Saganami-Island-Tactical-Simulator---Miniatures-1to12000?PageNumber=2&ProductLineId=#pf)
-    1. Twilight Imperium 4ая редакция
-    1. Остаться в Живых. Неизведанные Земли [ссылка](https://gaga.ru/game/ostatsja-v-zhivih-neizvedannie-zemli/)
     1. Dune Board Game [ссылка](https://www.gf9games.com/dune/)
     1. Самая сложная настольная игра в мире [The Campaign for North Africa](https://boardgamegeek.com/boardgame/4815/campaign-north-africa)
 1. Футболка XXXL со смешной надписью, как-то:
@@ -27,7 +25,6 @@
     1. «Весьма вероятно, что бога нет»
     1. «Если небо голубое, я хочу верить в то, что небо голубое. Если небо не голубое, я хочу верить в то, что небо не голубое. Я не буду цепляться за веру, которой не хочу. »
     1. Ваш вариант...
-1. Детектор СO2 (не путать с детектором CO) [ссылка](https://www.ulmart.ru/goods/737032)
 1. Книги (только указанные, только на английском)
     1. Pro .NET Performance Sasha Goldstein
     1. Design Patterns in .NET Reusable Approaches in C# and F# for Object-Oriented Software Design  Nesteruk, Dmitri 
@@ -40,7 +37,7 @@
     1. Acquire
     1. Дополнение Warrior Knights: Crown & Glory (строго английский)
     1. Дополнения  Descent 2nd edition: The Trollfens, Manor of Ravens
-    1. Eclipse с дополнениями
+    1. Eclipse 2ая редакция с дополнениями
     1. Last Banquet
     1. KeyForge: Age of Ascension Two-Player Starter
     1. Cosmic Encounter 
