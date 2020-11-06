@@ -37,7 +37,6 @@
     1. Acquire
     1. Дополнение Warrior Knights: Crown & Glory (строго английский)
     1. Дополнения  Descent 2nd edition: The Trollfens, Manor of Ravens
-    1. Eclipse 2ая редакция с дополнениями
     1. Last Banquet
     1. KeyForge: Age of Ascension Two-Player Starter
     1. Cosmic Encounter 
