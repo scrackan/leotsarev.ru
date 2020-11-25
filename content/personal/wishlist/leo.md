@@ -11,7 +11,6 @@
 ## Основная часть вишлиста
 1. Принять участие в организации ДР (привезти/увезти что-то, съездить за покупками, жарить шашлык на месте etc)
 1. Настолки (по возможности на английском)
-    1. Heroes of Terrinoth
     1. Миниатюры к Saganami Island Tactical Simulator [ссылка](https://www.nobleknight.com/Products/Honorverse---Saganami-Island-Tactical-Simulator---Miniatures-1to12000?PageNumber=2&ProductLineId=#pf)
     1. Dune Board Game [ссылка](https://www.gf9games.com/dune/)
     1. Самая сложная настольная игра в мире [The Campaign for North Africa](https://boardgamegeek.com/boardgame/4815/campaign-north-africa)
@@ -36,7 +35,6 @@
     1. Дополнение Warrior Knights: Crown & Glory (строго английский)
     1. Дополнения  Descent 2nd edition: The Trollfens, Manor of Ravens
     1. Last Banquet
-    1. KeyForge: Age of Ascension Two-Player Starter
     1. Cosmic Encounter 
     1. DOOM: The Board Game (редакция 2016 года, а не та, которая у Вера)
     1. Civilization: A New Dawn 
