@@ -10,10 +10,11 @@
 
 ## Основная часть вишлиста
 1. Принять участие в организации ДР (привезти/увезти что-то, съездить за покупками, жарить шашлык на месте etc)
-1. Настолки (по возможности на английском)
+1. Настолки
     1. Миниатюры к Saganami Island Tactical Simulator [ссылка](https://www.nobleknight.com/Products/Honorverse---Saganami-Island-Tactical-Simulator---Miniatures-1to12000?PageNumber=2&ProductLineId=#pf)
     1. Dune Board Game [ссылка](https://www.gf9games.com/dune/)
     1. Самая сложная настольная игра в мире [The Campaign for North Africa](https://boardgamegeek.com/boardgame/4815/campaign-north-africa)
+    1. Дополнение к Сумеркам Империи (лучше на русском)  [ссылка](https://www.fantasyflightgames.com/en/products/twilight-imperium-fourth-edition/products/prophecy-kings/)
 1. Футболка XXXL со смешной надписью, как-то:
     1. «Кто такой Джон Голт?»
     1. «Движение за восстановление бассейна „Москва“»
@@ -38,7 +39,6 @@
     1. Cosmic Encounter 
     1. DOOM: The Board Game (редакция 2016 года, а не та, которая у Вера)
     1. Civilization: A New Dawn 
-    1. Брасс https://www.crowdgames.ru/collection/brass
     1. Любая настолка по вашему выбору (ТОЛЬКО для реальных настолкозадротов, например настолко-петергофцев. Не надо дарить настолку, если вы не уверены, она может не понравится или у меня она уже может быть)
 1. Толстовка с капюшоном, карманом спереди и надписей на спине «мастерская группа»
 1. Книги (только указанные, только на английском)
